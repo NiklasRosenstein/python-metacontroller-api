@@ -1,0 +1,5 @@
+[[entries]]
+id = "eb37cc1b-5247-43f0-b92b-b43e03654660"
+type = "improvement"
+description = "Add `metacontroller_apicontrib.flask.serve()` function"
+author = "@NiklasRosenstein"

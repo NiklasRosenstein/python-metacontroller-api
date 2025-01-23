@@ -4,7 +4,7 @@ Expose a Metacontroller implementation as a Flask app.
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Callable, Literal, cast
+from typing import Any, Callable, Literal, cast
 
 import flask
 
@@ -95,3 +95,25 @@ class MetacontrollerBlueprint(flask.Blueprint):
 
         handler.__name__ = kind
         return handler
+
+
+def serve(
+    controller: CompositeController | DecoratorController,
+    host: str | None = None,
+    port: int | None = None,
+    debug: bool = False,
+    load_dotenv: bool = True,
+    **options: Any,
+) -> None:
+    """
+    Create a Flask app serving the given controller and runs it.
+    """
+
+    app = flask.Flask(__name__)
+    app.register_blueprint(MetacontrollerBlueprint(controller))
+    app.run(
+        host=host,
+        port=port,
+        debug=debug,
+        **options,
+    )
