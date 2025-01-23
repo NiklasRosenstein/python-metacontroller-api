@@ -115,5 +115,6 @@ def serve(
         host=host,
         port=port,
         debug=debug,
+        load_dotenv=load_dotenv,
         **options,
     )
