@@ -37,6 +37,3 @@ ruff = "uv run ruff check . && uv run ruff format --check ."
 
 [tool.slap.run]
 fmt = "uv run ruff format . && uv run ruff check --fix ."
-
-[tool.slap.release]
-branch = "main"
