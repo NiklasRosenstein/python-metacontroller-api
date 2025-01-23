@@ -54,7 +54,7 @@ class MetacontrollerBlueprint(flask.Blueprint):
         self._log_request_response = log_request_response
 
         self.add_url_rule("/customize", None, self._make_dispatch("customize", controller.customize), methods=["POST"])
-        self.add_url_rule("/sync", None, self._make_dispatch("sync", controller.sync), methods=["POST"])
+        self.add_url_rule("/sync", None, self._make_dispatch("sync", controller.sync), methods=["POST"])  # type: ignore[type-var]
         self.add_url_rule("/finalize", None, self._make_dispatch("finalize", controller.finalize), methods=["POST"])
 
     def _make_dispatch[TReq: RequestResponse.Request, TResp: RequestResponse.Response](
