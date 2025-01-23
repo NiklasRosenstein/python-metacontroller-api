@@ -13,6 +13,7 @@ from .types import (
     OwnerReference,
     Resource,
     ResourceRule,
+    Status,
 )
 
 __all__ = [
@@ -31,4 +32,5 @@ __all__ = [
     "OwnerReference",
     "Resource",
     "ResourceRule",
+    "Status",
 ]
