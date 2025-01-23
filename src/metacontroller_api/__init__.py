@@ -1,4 +1,4 @@
-# from .controllers import CompositeController, DecoratorController
+from .controllers import CompositeController, DecoratorController
 from .types import (
     CompositeSyncRequest,
     CompositeSyncResponse,
@@ -6,19 +6,29 @@ from .types import (
     CustomizeResponse,
     DecoratorSyncRequest,
     DecoratorSyncResponse,
+    Factories,
     FinalizeRequest,
     FinalizeResponse,
+    ObjectMetadata,
+    OwnerReference,
+    Resource,
+    ResourceRule,
 )
 
 __all__ = [
     "CompositeController",
-    "DecoratorController",
     "CompositeSyncRequest",
     "CompositeSyncResponse",
     "CustomizeRequest",
     "CustomizeResponse",
+    "DecoratorController",
     "DecoratorSyncRequest",
     "DecoratorSyncResponse",
+    "Factories",
     "FinalizeRequest",
     "FinalizeResponse",
+    "ObjectMetadata",
+    "OwnerReference",
+    "Resource",
+    "ResourceRule",
 ]
