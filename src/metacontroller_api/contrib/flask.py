@@ -93,4 +93,5 @@ class MetacontrollerBlueprint(flask.Blueprint):
 
             return flask.jsonify(response)
 
+        handler.__name__ = kind
         return handler
