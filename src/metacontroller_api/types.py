@@ -38,6 +38,12 @@ class Resource(TypedDict):
     kind: str
     metadata: ObjectMetadata
 
+    type: NotRequired[str]
+    data: NotRequired[dict[str, str]]
+    stringData: NotRequired[dict[str, str]]
+    spec: NotRequired[dict[str, Any]]
+    status: NotRequired["Status"]
+
 
 type Status = dict[str, Any]
 """
