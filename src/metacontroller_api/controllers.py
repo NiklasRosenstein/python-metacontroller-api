@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 
 from .types import (
+    CompositeFinalizeResponse,
     CompositeSyncRequest,
     CompositeSyncResponse,
     CustomizeRequest,
     CustomizeResponse,
+    DecoratorFinalizeResponse,
     DecoratorSyncRequest,
     DecoratorSyncResponse,
-    FinalizeRequest,
-    FinalizeResponse,
 )
 
 
@@ -23,7 +23,7 @@ class DecoratorController(ABC):
     def sync(self, request: SyncRequest) -> SyncResponse:
         raise NotImplementedError
 
-    def finalize(self, request: FinalizeRequest) -> FinalizeResponse:
+    def finalize(self, request: SyncRequest) -> DecoratorFinalizeResponse:
         raise NotImplementedError
 
 
@@ -38,5 +38,5 @@ class CompositeController(ABC):
     def sync(self, request: SyncRequest) -> SyncResponse:
         raise NotImplementedError
 
-    def finalize(self, request: FinalizeRequest) -> FinalizeResponse:
+    def finalize(self, request: SyncRequest) -> CompositeFinalizeResponse:
         raise NotImplementedError

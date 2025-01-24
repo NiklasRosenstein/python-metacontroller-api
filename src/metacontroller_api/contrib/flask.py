@@ -10,22 +10,29 @@ import flask
 
 from metacontroller_api.controllers import CompositeController, DecoratorController
 from metacontroller_api.types import (
+    CompositeFinalizeResponse,
     CompositeSyncRequest,
     CompositeSyncResponse,
     CustomizeRequest,
     CustomizeResponse,
+    DecoratorFinalizeResponse,
     DecoratorSyncRequest,
     DecoratorSyncResponse,
-    FinalizeRequest,
-    FinalizeResponse,
 )
 
 
 @dataclass
 class RequestResponse:
     type Kind = Literal["customize", "sync", "finalize"]
-    type Request = CustomizeRequest | FinalizeRequest | CompositeSyncRequest | DecoratorSyncRequest
-    type Response = CustomizeResponse | FinalizeResponse | CompositeSyncResponse | DecoratorSyncResponse | None
+    type Request = CustomizeRequest | CompositeSyncRequest | DecoratorSyncRequest
+    type Response = (
+        CustomizeResponse
+        | CompositeFinalizeResponse
+        | DecoratorFinalizeResponse
+        | CompositeSyncResponse
+        | DecoratorSyncResponse
+        | None
+    )
 
     kind: Kind
     request: Request
@@ -55,7 +62,7 @@ class MetacontrollerBlueprint(flask.Blueprint):
 
         self.add_url_rule("/customize", None, self._make_dispatch("customize", controller.customize), methods=["POST"])
         self.add_url_rule("/sync", None, self._make_dispatch("sync", controller.sync), methods=["POST"])  # type: ignore[type-var]
-        self.add_url_rule("/finalize", None, self._make_dispatch("finalize", controller.finalize), methods=["POST"])
+        self.add_url_rule("/finalize", None, self._make_dispatch("finalize", controller.finalize), methods=["POST"])  # type: ignore[type-var]
 
     def _make_dispatch[TReq: RequestResponse.Request, TResp: RequestResponse.Response](
         self,

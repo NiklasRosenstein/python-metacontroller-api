@@ -114,26 +114,6 @@ class CustomizeResponse(TypedDict):
     """ A list of JSON objects (ResourceRules) representing all the desired related resource descriptions. """
 
 
-class FinalizeRequest(TypedDict):
-    """
-    See https://metacontroller.github.io/metacontroller/api/decoratorcontroller.html#finalize-hook-request
-    and https://metacontroller.github.io/metacontroller/api/compositecontroller.html#finalize-hook-request.
-    """
-
-    finalizing: bool
-    """This is always true for the finalize hook. See the finalize hook for details."""
-
-
-class FinalizeResponse(TypedDict):
-    """
-    See https://metacontroller.github.io/metacontroller/api/decoratorcontroller.html#finalize-hook-response
-    and https://metacontroller.github.io/metacontroller/api/compositecontroller.html#finalize-hook-response.
-    """
-
-    finalized: bool
-    """ A boolean indicating whether you are done finalizing. """
-
-
 class DecoratorSyncRequest(TypedDict):
     """See https://metacontroller.github.io/metacontroller/api/decoratorcontroller.html#sync-hook-request."""
 
@@ -172,6 +152,15 @@ class DecoratorSyncResponse(TypedDict):
 
     resyncAfterSeconds: float
     """ Set the delay (in seconds, as a float) before an optional, one-time, per-object resync. """
+
+
+class DecoratorFinalizeResponse(DecoratorSyncResponse):
+    """
+    See https://metacontroller.github.io/metacontroller/api/decoratorcontroller.html#finalize-hook-response.
+    """
+
+    finalized: bool
+    """ A boolean indicating whether you are done finalizing. """
 
 
 class CompositeSyncRequest(TypedDict):
@@ -215,6 +204,15 @@ class CompositeSyncResponse(TypedDict):
     """ Set the delay (in seconds, as a float) before an optional, one-time, per-object resync. """
 
 
+class CompositeFinalizeResponse(CompositeSyncResponse):
+    """
+    See https://metacontroller.github.io/metacontroller/api/compositecontroller.html#finalize-hook-response.
+    """
+
+    finalized: bool
+    """ A boolean indicating whether you are done finalizing. """
+
+
 class Factories:
     # We can't define functions on the TypeDict subclass, nor override __new__. So we need to provide
     # alternative methods for conveniently constructing payloads.
@@ -236,12 +234,44 @@ class Factories:
         }
 
     @staticmethod
+    def DecoratorFinalizeResponse(
+        finalized: bool,
+        labels: dict[str, str] | None = None,
+        annotations: dict[str, str] | None = None,
+        status: Status | None = None,
+        attachments: list[Resource] | None = None,
+        resyncAfterSeconds: int = 0,
+    ) -> "DecoratorFinalizeResponse":
+        return {
+            "finalized": finalized,
+            "labels": labels or {},
+            "annotations": annotations or {},
+            "status": status,
+            "attachments": attachments or [],
+            "resyncAfterSeconds": resyncAfterSeconds,
+        }
+
+    @staticmethod
     def CompositeSyncResponse(
         status: Status,
         children: list[Resource],
         resyncAfterSeconds: float = 0,
     ) -> "CompositeSyncResponse":
         return {
+            "status": status,
+            "children": children or [],
+            "resyncAfterSeconds": resyncAfterSeconds,
+        }
+
+    @staticmethod
+    def CompositeFinalizeResponse(
+        finalized: bool,
+        status: Status,
+        children: list[Resource],
+        resyncAfterSeconds: float = 0,
+    ) -> "CompositeFinalizeResponse":
+        return {
+            "finalized": finalized,
             "status": status,
             "children": children or [],
             "resyncAfterSeconds": resyncAfterSeconds,
